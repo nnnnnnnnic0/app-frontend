@@ -1,4 +1,4 @@
-import Header from '../components/Header'
+import Header from '../components/Header1'
 import Hero from '../components/Hero'
 import Servicios from '../components/Servicios'
 import Sobre from '../components/Sobre'
