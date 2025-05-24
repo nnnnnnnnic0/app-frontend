@@ -1,13 +1,21 @@
-import Header from '../components/header'
+import Header from '../components/Header'
+import Hero from '../components/Hero'
+import Servicios from '../components/Servicios'
+import Sobre from '../components/Sobre'
+import Contacto from '../components/Contacto'
+import Footer from '../components/Footer'
 
 export default function Home() {
     return (
         <>
             <Header />
             <main>
-                <h1>Bienvenido a mi nuevo frontend Next.js</h1>
-                <p>Próximamente servicios y demos aquí.</p>
+                <Hero />
+                <Servicios />
+                <Sobre />
+                <Contacto />
             </main>
+            <Footer />
         </>
     )
 }
