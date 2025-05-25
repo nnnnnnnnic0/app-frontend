@@ -10,7 +10,7 @@ export default function Home() {
     return (
         <>
             <Header />
-            <main>
+            <main className="px-2 sm:px-0">
                 <Hero />
                 <Servicios />
                 <Ventajas />
