@@ -1,87 +1,114 @@
-// /components/Header.js
 import Link from "next/link";
 import { useState } from "react";
 
 export default function Header() {
-    const [mobileMenu, setMobileMenu] = useState(false);
     const [showDemoMenu, setShowDemoMenu] = useState(false);
+    const [showMobileMenu, setShowMobileMenu] = useState(false);
+    const [showMobileDemoSub, setShowMobileDemoSub] = useState(false);
+
+    // Cierra submenú con delay (mejor experiencia)
+    let submenuTimeout;
+    const handleMouseEnter = () => {
+        clearTimeout(submenuTimeout);
+        setShowDemoMenu(true);
+    };
+    const handleMouseLeave = () => {
+        submenuTimeout = setTimeout(() => setShowDemoMenu(false), 120); // Pequeño delay
+    };
 
     return (
-        <header className="bg-blue-800 text-white px-4 py-3 flex items-center justify-between shadow">
+        <header className="bg-blue-800 text-white p-4 flex justify-between items-center relative z-20">
             <Link href="/" className="text-2xl font-bold tracking-tight">ReyesVallejos</Link>
-
-            {/* Hamburger for mobile */}
-            <button
-                className="md:hidden p-2"
-                onClick={() => setMobileMenu(m => !m)}
-                aria-label="Abrir menú"
-            >
-                <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-
-            {/* Menu */}
-            <nav>
-                <ul className={`
-          fixed top-0 left-0 w-full h-full bg-blue-900 bg-opacity-95 flex flex-col gap-3 items-center justify-center
-          transition-all z-50 md:static md:bg-transparent md:flex md:flex-row md:gap-6 md:w-auto md:h-auto md:items-center
-          ${mobileMenu ? "block" : "hidden"} md:block
-        `}>
+            {/* Desktop Nav */}
+            <nav className="hidden md:block">
+                <ul className="flex gap-6 items-center">
                     <li>
-                        <Link
-                            href="/#servicios"
-                            className="text-lg font-medium block py-2 px-4 rounded hover:bg-blue-700 md:bg-transparent md:hover:bg-blue-700 transition"
-                            onClick={() => setMobileMenu(false)}
-                        >Servicios</Link>
+                        <Link href="/#servicios" className="hover:underline">Servicios</Link>
                     </li>
-                    {/* DEMO submenu */}
-                    <li className="relative">
-                        {/* Desktop: hover. Mobile: tap abre/cierra */}
-                        <button
-                            className="text-lg font-medium flex items-center gap-1 py-2 px-4 rounded hover:bg-blue-700 transition md:bg-transparent"
-                            onClick={() => setShowDemoMenu(s => !s)}
-                            onMouseEnter={() => window.innerWidth >= 768 && setShowDemoMenu(true)}
-                            onMouseLeave={() => window.innerWidth >= 768 && setShowDemoMenu(false)}
-                        >
+                    <li
+                        className="relative"
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                    >
+                        <button className="hover:underline flex items-center gap-1">
                             Demo
                             <svg width={16} height={16} fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth={2} /></svg>
                         </button>
-                        {/* Submenu */}
-                        {(showDemoMenu || mobileMenu) && (
-                            <ul className={`
-                absolute md:left-0 md:top-full md:mt-1 bg-white text-blue-800 rounded shadow-lg min-w-[200px] z-50
-                md:block ${mobileMenu ? "static mt-2 w-full bg-blue-800 text-white shadow-none rounded-none" : ""}
-              `}>
+                        {showDemoMenu && (
+                            <ul
+                                className="absolute left-0 top-full mt-1 bg-white text-blue-800 rounded shadow-lg min-w-[200px] z-50"
+                                onMouseEnter={handleMouseEnter}
+                                onMouseLeave={handleMouseLeave}
+                            >
                                 <li>
                                     <Link
                                         href="/demos/crea-tu-web"
-                                        className="block px-4 py-2 hover:bg-blue-100 md:hover:bg-blue-100 md:text-blue-800 hover:text-blue-900"
-                                        onClick={() => { setShowDemoMenu(false); setMobileMenu(false); }}
+                                        className="block px-4 py-2 hover:bg-blue-100"
                                     >
                                         Generador de Webs
                                     </Link>
                                 </li>
-                                {/* Puedes agregar más demos aquí */}
                             </ul>
                         )}
                     </li>
                     <li>
-                        <Link
-                            href="/#contacto"
-                            className="text-lg font-medium block py-2 px-4 rounded hover:bg-blue-700 md:bg-transparent md:hover:bg-blue-700 transition"
-                            onClick={() => setMobileMenu(false)}
-                        >Contacto</Link>
-                    </li>
-                    {/* Solo mobile: botón para cerrar menú */}
-                    <li className="md:hidden mt-4">
-                        <button
-                            onClick={() => setMobileMenu(false)}
-                            className="bg-blue-700 px-6 py-2 rounded text-white font-bold text-lg"
-                        >Cerrar ✕</button>
+                        <Link href="/#contacto" className="hover:underline">Contacto</Link>
                     </li>
                 </ul>
             </nav>
+            {/* Mobile Hamburger */}
+            <button
+                className="md:hidden p-2"
+                aria-label="Abrir menú"
+                onClick={() => setShowMobileMenu(!showMobileMenu)}
+            >
+                <svg width={32} height={32} fill="none">
+                    <rect y={8} width={32} height={3} rx={1.5} fill="#fff" />
+                    <rect y={15} width={32} height={3} rx={1.5} fill="#fff" />
+                    <rect y={22} width={32} height={3} rx={1.5} fill="#fff" />
+                </svg>
+            </button>
+            {/* Mobile Nav Drawer */}
+            {showMobileMenu && (
+                <div className="fixed inset-0 bg-black/30 z-40" onClick={() => setShowMobileMenu(false)}>
+                    <nav
+                        className="absolute right-0 top-0 bg-blue-800 text-white w-64 h-full shadow-xl p-6 pt-20 flex flex-col gap-5"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <Link href="/#servicios" className="py-2 border-b border-blue-700" onClick={() => setShowMobileMenu(false)}>
+                            Servicios
+                        </Link>
+                        {/* Submenú mobile */}
+                        <div>
+                            <button
+                                className="w-full flex justify-between items-center py-2 border-b border-blue-700"
+                                onClick={() => setShowMobileDemoSub(v => !v)}
+                            >
+                                <span>Demo</span>
+                                <svg width={16} height={16} fill="none">
+                                    <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth={2} />
+                                </svg>
+                            </button>
+                            {showMobileDemoSub && (
+                                <ul className="bg-white text-blue-800 rounded shadow-lg mt-1">
+                                    <li>
+                                        <Link
+                                            href="/demos/crea-tu-web"
+                                            className="block px-4 py-2 hover:bg-blue-100"
+                                            onClick={() => setShowMobileMenu(false)}
+                                        >
+                                            Generador de Webs
+                                        </Link>
+                                    </li>
+                                </ul>
+                            )}
+                        </div>
+                        <Link href="/#contacto" className="py-2 border-b border-blue-700" onClick={() => setShowMobileMenu(false)}>
+                            Contacto
+                        </Link>
+                    </nav>
+                </div>
+            )}
         </header>
     );
 }
