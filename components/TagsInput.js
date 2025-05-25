@@ -1,19 +1,23 @@
 // /components/TagsInput.js
 import { useState } from "react";
+
 export default function TagsInput({ value, onChange, placeholder }) {
     const [input, setInput] = useState("");
+
     return (
         <div>
             <div className="flex flex-wrap gap-2 mb-2">
                 {(value || []).map((tag, i) => (
                     <span
                         key={i}
-                        className="bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center max-w-full"
+                        className="bg-altiblueLight text-altiblue px-3 py-1 rounded-full text-sm flex items-center max-w-full shadow-sm"
+                        tabIndex={0}
+                        aria-label={`Etiqueta: ${tag}`}
                     >
                         <span className="truncate max-w-[90px]">{tag}</span>
                         <button
                             type="button"
-                            className="ml-2 text-red-600 hover:text-red-800 font-bold px-1 rounded focus:outline-none focus:ring-2 focus:ring-red-400"
+                            className="ml-2 text-alticoral hover:text-red-700 font-bold px-1 rounded focus:outline-none focus:ring-2 focus:ring-alticoral"
                             style={{ fontSize: "1.1rem", lineHeight: "1" }}
                             aria-label={`Eliminar ${tag}`}
                             onClick={() => onChange((value || []).filter((_, idx) => idx !== i))}
@@ -22,7 +26,7 @@ export default function TagsInput({ value, onChange, placeholder }) {
                 ))}
             </div>
             <input
-                className="w-full p-3 text-base border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full p-3 text-base border border-altiblueLight rounded-xl focus:outline-none focus:ring-2 focus:ring-altiblueLight"
                 type="text"
                 placeholder={placeholder}
                 value={input}
@@ -33,15 +37,20 @@ export default function TagsInput({ value, onChange, placeholder }) {
                         input.trim()
                     ) {
                         e.preventDefault();
-                        if (!value.includes(input.trim()) && value.length < 5) {
+                        if (
+                            !value.includes(input.trim()) &&
+                            (value.length < 5)
+                        ) {
                             onChange([...(value || []), input.trim()]);
                             setInput("");
                         }
                     }
                 }}
+                aria-label={placeholder}
+                maxLength={32}
             />
-            <div className="text-xs text-gray-500 mt-1">
-                Presiona Enter, coma o Tab para agregar cada uno. Máximo 5.
+            <div className="text-xs text-altigray mt-1">
+                Presiona <b>Enter</b>, <b>coma</b> o <b>Tab</b> para agregar cada uno. <span className="text-alticoral font-semibold">Máximo 5.</span>
             </div>
         </div>
     );

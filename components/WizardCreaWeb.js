@@ -1,3 +1,4 @@
+// components/WizardCreaWeb.js
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PreviewLanding from "./PreviewLanding";
@@ -126,8 +127,7 @@ const pasos = [
 
 
 export default function WizardCreaWeb() {
-    // HOOKS y lógica SIEMPRE VAN AQUÍ AL PRINCIPIO
-    const [step, setStep] = useState(-1); // Empieza en -1 para onboarding
+    const [step, setStep] = useState(-1);
     const [form, setForm] = useState({});
     const [saltadas, setSaltadas] = useState([]);
     const [showTooltip, setShowTooltip] = useState(false);
@@ -136,7 +136,6 @@ export default function WizardCreaWeb() {
 
     const progress = step < 0 ? 0 : Math.round(((step + 1) / (pasos.length + 1)) * 100);
 
-    // Tooltip UX: si usuario se detiene 8 seg en una pregunta
     useEffect(() => {
         setShowTooltip(false);
         if (step >= 0 && step < pasos.length) {
@@ -145,11 +144,10 @@ export default function WizardCreaWeb() {
         return () => clearTimeout(timerRef.current);
     }, [step]);
 
-    // Celebración final
     useEffect(() => {
         if (step === pasos.length) {
             setConfetti(true);
-            setTimeout(() => setConfetti(false), 3500);
+            setTimeout(() => setConfetti(false), 2500);
         }
     }, [step]);
 
@@ -168,7 +166,7 @@ export default function WizardCreaWeb() {
             case "text":
                 return (
                     <input
-                        className="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full p-3 border border-altiblueLight rounded-xl focus:outline-none focus:ring-2 focus:ring-altiblueLight"
                         type="text"
                         placeholder={p.placeholder}
                         value={form[p.nombre] || ""}
@@ -179,7 +177,7 @@ export default function WizardCreaWeb() {
             case "textarea":
                 return (
                     <textarea
-                        className="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full p-3 border border-altiblueLight rounded-xl focus:outline-none focus:ring-2 focus:ring-altiblueLight"
                         rows={3}
                         placeholder={p.placeholder}
                         value={form[p.nombre] || ""}
@@ -189,7 +187,7 @@ export default function WizardCreaWeb() {
             case "select":
                 return (
                     <select
-                        className="w-full p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full p-3 border border-altiblueLight rounded-xl focus:outline-none focus:ring-2 focus:ring-altiblueLight"
                         value={form[p.nombre] || ""}
                         onChange={e => handleChange(e.target.value)}
                     >
@@ -206,7 +204,7 @@ export default function WizardCreaWeb() {
                             <label key={idx} className="inline-flex items-center cursor-pointer">
                                 <input
                                     type="radio"
-                                    className="form-radio text-blue-600"
+                                    className="form-radio text-altiblue"
                                     name={p.nombre}
                                     checked={form[p.nombre] === op}
                                     onChange={() => handleChange(op)}
@@ -223,7 +221,7 @@ export default function WizardCreaWeb() {
                             <label key={idx} className="inline-flex items-center cursor-pointer">
                                 <input
                                     type="checkbox"
-                                    className="form-checkbox text-blue-600"
+                                    className="form-checkbox text-altiblue"
                                     checked={Array.isArray(form[p.nombre]) && form[p.nombre].includes(op)}
                                     onChange={e => {
                                         if (e.target.checked) {
@@ -251,31 +249,31 @@ export default function WizardCreaWeb() {
         }
     };
 
-    // *** El IF y el RETURN DEBEN IR DESPUÉS de los hooks ***
+    // Onboarding
     if (step < 0) return (
         <motion.div
-            className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-white to-blue-50 px-3"
+            className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-altiblueLight/30 via-white to-altiblue/10 px-3"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
         >
             <motion.div className="bg-white p-7 sm:p-10 rounded-2xl shadow-xl flex flex-col items-center w-full max-w-sm sm:max-w-md"
                 initial={{ scale: 0.96 }} animate={{ scale: 1 }} transition={{ duration: 0.8, type: "spring" }}>
                 <span className="text-5xl mb-2">👋</span>
-                <h2 className="text-xl sm:text-2xl font-bold text-blue-800 mb-2 text-center">¡Bienvenido a tu Generador Web!</h2>
-                <div className="mb-4 text-blue-700 text-center max-w-xs">
+                <h2 className="text-xl sm:text-2xl font-bold text-altiblue mb-2 text-center">¡Bienvenido a tu Generador Web!</h2>
+                <div className="mb-4 text-altiblue text-center max-w-xs">
                     Te guiamos paso a paso para crear la página ideal para tu negocio.<br />Responde solo lo necesario y ¡verás cómo tu web cobra vida en la vista previa! 🚀
                 </div>
                 <motion.div
-                    className="w-full bg-blue-200 rounded-full h-3 mb-3"
+                    className="w-full bg-altiblueLight/40 rounded-full h-3 mb-3"
                     initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 1.3 }}
                 >
                     <motion.div
-                        className="bg-blue-700 h-3 rounded-full"
+                        className="bg-altiblue h-3 rounded-full"
                         initial={{ width: 0 }} animate={{ width: "30%" }} transition={{ duration: 1.3 }}
                     />
                 </motion.div>
                 <button
                     onClick={() => setStep(0)}
-                    className="w-full px-8 py-3 bg-blue-700 text-white rounded-lg font-bold shadow hover:bg-blue-800 transition mt-2"
+                    className="w-full px-8 py-3 bg-altiblue text-white rounded-lg font-bold shadow hover:bg-altiblueLight transition mt-2"
                 >
                     ¡Comenzar!
                 </button>
@@ -283,32 +281,31 @@ export default function WizardCreaWeb() {
         </motion.div>
     );
 
-    // *** El RESTO DEL COMPONENTE VA AQUÍ, IGUAL QUE ANTES ***
-
+    // Main wizard
     return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-blue-50 to-white flex flex-col md:flex-row items-start justify-center py-8 px-3">
+        <div className="min-h-screen bg-gradient-to-br from-altiblueLight/10 via-white to-altiwhite flex flex-col md:flex-row items-start justify-center py-8 px-3">
             <ConfettiCelebration show={confetti} />
 
-            {/* Formulario wizard */}
+            {/* Wizard form */}
             <div className="w-full md:w-1/2 max-w-xl bg-white shadow-xl rounded-2xl p-4 sm:p-8 relative mb-8 md:mb-0">
                 {/* Progress bar */}
                 <div className="mb-6 sm:mb-8">
                     <div className="flex justify-between items-center mb-1">
-                        <span className="text-blue-800 font-bold text-base sm:text-lg">
+                        <span className="text-altiblue font-bold text-base sm:text-lg">
                             Paso {Math.max(1, step + 1)} de {pasos.length}
                         </span>
-                        <span className="text-blue-700 text-xs sm:text-sm">{progress}%</span>
+                        <span className="text-altiblueLight text-xs sm:text-sm">{progress}%</span>
                     </div>
-                    <div className="w-full bg-blue-100 rounded-full h-2">
+                    <div className="w-full bg-altiblueLight/30 rounded-full h-2">
                         <motion.div
-                            className="bg-blue-700 h-2 rounded-full transition-all"
+                            className="bg-altiblue h-2 rounded-full transition-all"
                             initial={{ width: 0 }}
                             animate={{ width: `${progress}%` }}
                             transition={{ duration: 0.7 }}
                         />
                     </div>
                 </div>
-                {/* Pregunta + ayuda + feedback + tooltip */}
+                {/* Step content */}
                 <AnimatePresence mode="wait">
                     {step < pasos.length ? (
                         <motion.div
@@ -318,29 +315,29 @@ export default function WizardCreaWeb() {
                             exit={{ opacity: 0, x: -60 }}
                             transition={{ duration: 0.4 }}
                         >
-                            <label className="block text-base sm:text-lg mb-3 text-blue-900 font-bold flex items-center gap-2">
+                            <label className="block text-base sm:text-lg mb-3 text-altiblue font-bold flex items-center gap-2">
                                 <span className="text-xl sm:text-2xl">{pasos[step].emoji}</span>
                                 {pasos[step].label}
                             </label>
-                            <div className="text-gray-500 mb-2 text-sm">{pasos[step].ayuda}</div>
+                            <div className="text-altigray mb-2 text-sm">{pasos[step].ayuda}</div>
                             {renderCampo(pasos[step])}
-                            {/* Micro-feedback UX */}
+                            {/* Micro-feedback */}
                             {pasos[step].obligatorio && (
                                 !form[pasos[step].nombre] ||
                                 (Array.isArray(form[pasos[step].nombre]) && form[pasos[step].nombre].length === 0)
                             ) && (
                                     <motion.div
                                         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                                        className="text-red-600 text-sm mt-2"
+                                        className="text-alticoral text-sm mt-2"
                                     >
                                         Este campo es importante para que tu web sea única 😊
                                     </motion.div>
                                 )}
-                            {/* Tooltip si se detiene el usuario */}
+                            {/* Tooltip */}
                             {showTooltip && (
                                 <motion.div
                                     initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                                    className="mt-4 p-2 bg-blue-100 text-blue-800 text-xs rounded-xl shadow"
+                                    className="mt-4 p-2 bg-altiblueLight/30 text-altiblue text-xs rounded-xl shadow"
                                 >
                                     {pasos[step].emoji} ¿Necesitas inspiración? Mira el ejemplo y responde con lo primero que se te ocurra. ¡Todo ayuda!
                                 </motion.div>
@@ -349,7 +346,7 @@ export default function WizardCreaWeb() {
                                 <button
                                     onClick={atras}
                                     disabled={step === 0}
-                                    className="w-full sm:w-auto px-5 py-2 bg-gray-200 rounded-lg font-semibold hover:bg-gray-300 transition disabled:opacity-50"
+                                    className="w-full sm:w-auto px-5 py-2 bg-altigray/20 text-altigray rounded-lg font-semibold hover:bg-altigray/40 transition disabled:opacity-50"
                                 >
                                     Atrás
                                 </button>
@@ -357,7 +354,7 @@ export default function WizardCreaWeb() {
                                     {!pasos[step].obligatorio && (
                                         <button
                                             onClick={saltar}
-                                            className="w-full sm:w-auto px-5 py-2 bg-yellow-100 text-yellow-800 rounded-lg font-semibold hover:bg-yellow-200 transition"
+                                            className="w-full sm:w-auto px-5 py-2 bg-alticoral/10 text-alticoral rounded-lg font-semibold hover:bg-alticoral/20 transition"
                                         >
                                             Saltar
                                         </button>
@@ -370,7 +367,7 @@ export default function WizardCreaWeb() {
                                                 form[pasos[step].nombre] === "" ||
                                                 (Array.isArray(form[pasos[step].nombre]) && form[pasos[step].nombre].length === 0))
                                         }
-                                        className="w-full sm:w-auto px-5 py-2 bg-blue-700 text-white rounded-lg font-semibold hover:bg-blue-800 transition disabled:opacity-50"
+                                        className="w-full sm:w-auto px-5 py-2 bg-altiblue text-white rounded-lg font-semibold hover:bg-altiblueLight transition disabled:opacity-50"
                                     >
                                         Siguiente
                                     </button>
@@ -385,20 +382,20 @@ export default function WizardCreaWeb() {
                             exit={{ opacity: 0 }}
                             transition={{ duration: 0.5 }}
                         >
-                            <h2 className="text-xl sm:text-2xl font-bold mb-2 text-blue-800 flex items-center gap-2">🎉 ¡Así quedaría tu web!</h2>
-                            <div className="text-gray-600 mb-4 text-sm sm:text-base">
+                            <h2 className="text-xl sm:text-2xl font-bold mb-2 text-altiblue flex items-center gap-2">🎉 ¡Así quedaría tu web!</h2>
+                            <div className="text-altigray mb-4 text-sm sm:text-base">
                                 Si quieres que hagamos tu sitio realidad, haz clic aquí o contáctanos.<br />¡Nos encanta ayudar a crecer negocios como el tuyo!
                             </div>
                             <div className="flex flex-col sm:flex-row justify-between mt-8 gap-2">
                                 <button
                                     onClick={() => setStep(0)}
-                                    className="w-full sm:w-auto px-5 py-2 bg-gray-200 rounded-lg font-semibold hover:bg-gray-300 transition"
+                                    className="w-full sm:w-auto px-5 py-2 bg-altigray/20 text-altigray rounded-lg font-semibold hover:bg-altigray/40 transition"
                                 >
                                     Completar o revisar respuestas
                                 </button>
                                 <a
                                     href="/#contacto"
-                                    className="w-full sm:w-auto px-8 py-3 bg-blue-700 text-white rounded-lg font-bold shadow hover:bg-blue-800 transition text-center"
+                                    className="w-full sm:w-auto px-8 py-3 bg-altiblue text-white rounded-lg font-bold shadow hover:bg-altiblueLight transition text-center"
                                 >
                                     ¡Quiero mi sitio web!
                                 </a>
@@ -406,13 +403,13 @@ export default function WizardCreaWeb() {
                         </motion.div>
                     )}
                 </AnimatePresence>
-                <div className="text-xs sm:text-sm text-gray-400 mt-3 text-center max-w-lg">
+                <div className="text-xs sm:text-sm text-altigray mt-3 text-center max-w-lg">
                     ¿Dudas? Completa solo lo que quieras, y juntos crearemos una web profesional que te hará destacar.<br />🚀
                 </div>
             </div>
-            {/* Sidebar Preview, en mobile va debajo */}
+            {/* Sidebar Preview */}
             <div className="w-full md:w-1/2 md:pl-10 flex flex-col items-center mt-8 md:mt-0">
-                <div className="mb-2 text-blue-800 font-bold text-base sm:text-lg hidden md:block">Vista previa en tiempo real</div>
+                <div className="mb-2 text-altiblue font-bold text-base sm:text-lg hidden md:block">Vista previa en tiempo real</div>
                 <PreviewLanding data={form} />
             </div>
         </div>
