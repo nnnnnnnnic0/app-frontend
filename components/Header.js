@@ -26,6 +26,7 @@ export default function Header() {
 
     const demos = [
         { label: "Generador de Webs", href: "/demos/crea-tu-web" },
+        { label: "ERP AltiCloud", href: "/demos/erp-alticloud" },
         // Más demos aquí si quieres
     ];
 
